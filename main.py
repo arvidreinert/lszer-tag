@@ -12,7 +12,7 @@ class game():
         self.actions = []
         for i in range(0,20):
             self.animations["move"].append(f"survivor-move_handgun_{i}.png")
-        self.rects["player"] = Rectangle((100*SW,100*SH),(width/2*SW,height-100*SW),(0,0,0),self.animations["move"][0])
+        self.rects["player"] = Rectangle((100*SW,100*SH),(width/2,height-100*SW),(0,0,0),self.animations["move"][0])
 
     def decode(self,data_string=""):
         data_string = data_string.replace("'","")
@@ -35,7 +35,7 @@ class game():
                 actions[act][1]=actions[act][1].replace(")","")
                 print(actions[act][1])
                 pos = actions[act][1].split("/")
-                self.rects[actions[act][0]].set_position(float(pos[0])*SW,height*SH-float(pos[1])*SH)
+                self.rects[actions[act][0]].set_position(float(pos[0])*SW,(height-float(pos[1]))*SH)
 
     def main_loop(self):
         players_count = 0
@@ -54,7 +54,7 @@ class game():
                 if first:
                     if fp == False:
                         pygame.display.set_caption(f"player{players_count}")
-                    self.rects["enemy"] = Rectangle((100*SW,100*SH),(width/2*SW,100*SH),(0,0,0),self.animations["move"][0])
+                    self.rects["enemy"] = Rectangle((100*SW,100*SH),(width/2,100*SH),(0,0,0),self.animations["move"][0])
                     first = False
                 answ = server.send_and_listen("req:actio")
                 if not answ == "False":
