@@ -98,7 +98,7 @@ class game():
 
             pygame.display.update()
             x = self.rects["player"].get_pos()
-            self.actions.append(f"move:enemy*{str((x[0],x[1])).replace(", ","/")}")
+            self.actions.append(f"move:enemy*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}")
             if first == False:
                 try:
                     server.send(f"actio;{self.actions}")
