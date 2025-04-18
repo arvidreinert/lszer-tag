@@ -6,6 +6,7 @@ import os
 class game():
     def __init__(self,server):
         self.running = True
+        self.bullet_count = 0
         self.count = 0
         self.server = server
         self.rects = {}
@@ -17,11 +18,12 @@ class game():
         self.rects["player"] = Rectangle((100*SW,100*SH),(round(random.uniform(100*SW,width-100*SW),2),height-100*SH),(0,0,0),self.animations["move"][0])
     
     def make_bullet(self):
-        name = f"bullet{len(list(self.rects))}"
+        name = f"bullet{self.bullet_count}"
         self.rects[name] = Rectangle((30*SW,30*SH),self.rects["player"].get_pos(),(0,0,0),"09.png")
         self.rects[name].set_rotation(self.rects["player"].rotation-90)
         self.bullets[name] = [self.rects[name],100,self.rects["player"].rotation-90]
         self.actions.append(f"create:{name}*100*{self.rects["player"].rotation-90}")
+        self.bullet_count += 1
 
     def decode(self,data_string=""):
         data_string = data_string.replace("'","")
@@ -43,6 +45,7 @@ class game():
             if act[0] == "create":
                 self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
                 self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
+                self.bullet_count += 1
             if act[0] == "move":
                 act[1][1]=act[1][1].replace("(","")
                 act[1][1]=act[1][1].replace(")","")
