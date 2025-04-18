@@ -45,6 +45,7 @@ class game():
         while self.running:
             clock.tick(60)
             self.actions = []
+            pygame.display.set_caption(f"{clock.get_fps()}")
             if players_count <= 1:
                 pygame.display.set_caption(f"player1")
                 fp = True
