@@ -18,6 +18,8 @@ s.bind(("0.0.0.0", PORT))
 print(f"server: {hn}.local ({ip})")
 #to who, what
 actions_receveid = "False"
+message_count = 0
+message_history = []
 while True:
     ready,_,_, = select.select([s],[],[],1)
     if ready:
@@ -49,8 +51,12 @@ while True:
                 if last_action_to[1] == addr[1]:
                     s.sendto(pickle.dumps("False"), addr)
                 else:
-                    print("sent to:",addr)
+                    print("sent to:",addr,"count:",message_count)
                     print(actions_receveid, "send")
-                    s.sendto(pickle.dumps(actions_receveid), addr)
+                    s.sendto(pickle.dumps(f"{actions_receveid}?{message_count}"), addr)
+                    message_history.append(actions_receveid)
+                    if len(message_history) >=151:
+                        del message_history[-1]
+                    message_count += 1
                     last_action_to = addr
                     actions_receveid = "False"

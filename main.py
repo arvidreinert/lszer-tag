@@ -5,6 +5,7 @@ import os
 
 class game():
     def __init__(self,server):
+        self.last_number = 0
         self.running = True
         self.bullet_count = 0
         self.count = 0
@@ -27,7 +28,9 @@ class game():
         self.bullet_count += 1
 
     def decode(self,data_string=""):
+        print(data_string)
         data_string = data_string.replace("'","")
+        data_string,number = data_string.split("?")
         all_actions = data_string.split(", ")
         actions = []
         for action in all_actions:
@@ -82,16 +85,9 @@ class game():
                     first = False
                 answ = server.send_and_listen("req:actio")
                 if not answ == "False":
-                    l_answ = list(answ)
-                    del l_answ[0],l_answ[-1]
-                    answ = ""
-                    for b in l_answ:
-                        answ += b
-                    l_answ = list(answ)
-                    del l_answ[0],l_answ[-1]
-                    answ = ""
-                    for b in l_answ:
-                        answ += b
+                    print(answ)
+                    answ = answ.replace("[","")
+                    answ = answ.replace("]","")
                     self.decode(answ)
 
 
