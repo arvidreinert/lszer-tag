@@ -40,7 +40,7 @@ class game():
 
         print(actions)
         for act in actions:
-            if act == "create":
+            if act[0] == "create":
                 self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
                 self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
             if act[0] == "move":
