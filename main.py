@@ -20,7 +20,7 @@ class game():
         self.rects[name] = Rectangle((20*SW,20*SH),self.rects["player"].get_pos(),(0,0,0),"09.png")
         self.rects[name].set_rotation(self.rects["player"].rotation)
         self.bullets[name] = [self.rects[name],100,self.rects["player"].rotation]
-        self.actions.append(f"create:{name}*100")
+        self.actions.append(f"create:{name}*100*{self.rects["player"].rotation}")
 
     def decode(self,data_string=""):
         data_string = data_string.replace("'","")
