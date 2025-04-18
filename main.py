@@ -37,7 +37,7 @@ class game():
                 rot = actions[act][2]
                 pos = actions[act][1].split("/")
                 self.rects[actions[act][0]].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
-                self.rects[actions[act][0]].set_rotation(float(rot))
+                self.rects[actions[act][0]].set_rotation(-float(rot))
 
     def main_loop(self):
         players_count = 0
