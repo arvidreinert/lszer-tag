@@ -109,7 +109,7 @@ class game():
             tdlet = []
             for bullet in self.bullets:
                 if self.bullets[bullet][1] > 0:
-                    self.bullets[bullet][0].move_towards(2*SW)
+                    self.bullets[bullet][0].move_towards(2*SW,True)
                     self.bullets[bullet][1] -= 1
                 else:
                     self.bullets[bullet][0].kill()
