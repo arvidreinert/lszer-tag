@@ -111,7 +111,8 @@ class game():
                 if self.bullets[bullet][1] > 0:
                     self.bullets[bullet][0].move_towards(2*SW,True)
                     self.bullets[bullet][1] -= 1
-                    x = self.rects[bullet][0].get_pos()
+                    self.bullets[bullet][0].update(screen)
+                    x = self.bullets[bullet][0].get_pos()
                     self.actions.append(f"move:{bullet}*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects[bullet].rotation)}")
                 else:
                     self.bullets[bullet][0].kill()
