@@ -23,6 +23,7 @@ class game():
         self.rects[name].set_rotation(self.rects["player"].rotation-90)
         self.bullets[name] = [self.rects[name],100,self.rects["player"].rotation-90]
         self.actions.append(f"create:{name}*100*{self.rects["player"].rotation-90}")
+        print("creat:",name,self.actions)
         self.bullet_count += 1
 
     def decode(self,data_string=""):
@@ -40,19 +41,21 @@ class game():
             action_info_list = action_info_string.split("*")
             actions.append((action_name,action_info_list))
 
-        print(actions)
+        print("acts:",actions)
         for act in actions:
             if act[0] == "create":
+                print(f"CREATE {act[1][0]}")
                 self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
                 self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
                 self.bullet_count += 1
-            if act[0] == "move":
+            elif act[0] == "move":
+                print(f"MOVE {act[1][0]}")
                 act[1][1]=act[1][1].replace("(","")
                 act[1][1]=act[1][1].replace(")","")
                 rot = act[1][2]
                 pos = act[1][1].split("/")
-                self.rects[act[1][0]].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
-                self.rects[act[1][0]].set_rotation(-float(rot))
+                self.rects[str(act[1][0])].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
+                self.rects[str(act[1][0])].set_rotation(-float(rot))
 
     def main_loop(self):
         players_count = 0
@@ -79,7 +82,6 @@ class game():
                     first = False
                 answ = server.send_and_listen("req:actio")
                 if not answ == "False":
-                    print("received data")
                     l_answ = list(answ)
                     del l_answ[0],l_answ[-1]
                     answ = ""
@@ -116,7 +118,6 @@ class game():
                     self.bullets[bullet][1] -= 1
                     self.bullets[bullet][0].update(screen)
                     x = self.bullets[bullet][0].get_pos()
-                    print("bullet:", x,"message:",f"move:{bullet}*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects[bullet].rotation)}")
                     self.actions.append(f"move:{bullet}*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects[bullet].rotation)}")
                 else:
                     self.bullets[bullet][0].kill()
@@ -140,10 +141,8 @@ class game():
             x = self.rects["player"].get_pos()
             self.actions.append(f"move:enemy*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects["player"].rotation)}")
             if first == False:
-                try:
-                    server.send(f"actio;{self.actions}")
-                except:
-                    print(self.actions)
+                server.send(f"actio;{self.actions}")
+                print("sended_acts:",self.actions)
 
 
 if ip == "":
