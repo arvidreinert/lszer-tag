@@ -26,7 +26,7 @@ class game():
     def decode(self,data_string=""):
         data_string = data_string.replace("'","")
         all_actions = data_string.split(", ")
-        actions = {}
+        actions = []
         for action in all_actions:
             splitted = action.split(":")
             x = 0
@@ -36,20 +36,20 @@ class game():
             action_name = splitted[0]
             action_info_string = splitted[1]
             action_info_list = action_info_string.split("*")
-            actions[action_name] = action_info_list
+            actions.append((action_name,action_info_list))
+
+        print(actions)
         for act in actions:
-            if act == "move":
-                print(actions[act][1])
-                actions[act][1]=actions[act][1].replace("(","")
-                actions[act][1]=actions[act][1].replace(")","")
-                print(actions[act][1])
-                rot = actions[act][2]
-                pos = actions[act][1].split("/")
-                self.rects[actions[act][0]].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
-                self.rects[actions[act][0]].set_rotation(-float(rot))
+            if act[0] == "move":
+                act[1][1]=act[1][1].replace("(","")
+                act[1][1]=act[1][1].replace(")","")
+                rot = act[1][2]
+                pos = act[1][1].split("/")
+                self.rects[act[1][0]].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
+                self.rects[act[1][0]].set_rotation(-float(rot))
             if act == "create":
-                self.rects[str(actions[act][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
-                self.rects[str(actions[act][0])].set_rotation(float(actions[act][2]))
+                self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
+                self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
 
     def main_loop(self):
         players_count = 0
@@ -113,7 +113,7 @@ class game():
                     self.bullets[bullet][1] -= 1
                     self.bullets[bullet][0].update(screen)
                     x = self.bullets[bullet][0].get_pos()
-                    print("bullet:", x)
+                    print("bullet:", x,"message:",f"move:{bullet}*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects[bullet].rotation)}")
                     self.actions.append(f"move:{bullet}*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects[bullet].rotation)}")
                 else:
                     self.bullets[bullet][0].kill()
