@@ -78,13 +78,13 @@ class game():
             self.rects["player"].point_towards(pygame.mouse.get_pos())
             #mocing
             if str(pygame.K_w) in pressed_keys:
-                self.rects["player"].move_towards(0.3*SW,True)
+                self.rects["player"].move_towards(0.5*SW,True)
             if str(pygame.K_s) in pressed_keys:
-                self.rects["player"].move_towards(-0.3*SW,True)
+                self.rects["player"].move_towards(-0.5*SW,True)
             if str(pygame.K_a) in pressed_keys:
-                self.rects["player"].change_position(-0.2*SW,0)
+                self.rects["player"].change_position(-0.4*SW,0)
             if str(pygame.K_d) in pressed_keys:
-                self.rects["player"].change_position(0.2*SW,0)
+                self.rects["player"].change_position(0.4*SW,0)
 
             self.rects["player"].change_rotation(90)
             for rect in self.rects:
