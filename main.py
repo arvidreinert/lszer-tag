@@ -6,6 +6,7 @@ import os
 class game():
     def __init__(self,server):
         self.running = True
+        self.count = 0
         self.server = server
         self.rects = {}
         self.bullets = {}
@@ -57,6 +58,8 @@ class game():
         fp = False
         while self.running:
             clock.tick(40)
+            if self.count > 0:
+                self.count -= 1
             self.actions = []
             pygame.display.set_caption(f"{clock.get_fps()}")
             if players_count <= 1:
@@ -111,7 +114,9 @@ class game():
                 if event.type == pygame.KEYUP:
                     del pressed_keys[pressed_keys.index(str(event.key))]
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.make_bullet()
+                    if self.count == 0:
+                        self.make_bullet()
+                        self.count = 40
 
             pygame.display.update()
             x = self.rects["player"].get_pos()
