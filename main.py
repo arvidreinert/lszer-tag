@@ -40,6 +40,9 @@ class game():
 
         print(actions)
         for act in actions:
+            if act == "create":
+                self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
+                self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
             if act[0] == "move":
                 act[1][1]=act[1][1].replace("(","")
                 act[1][1]=act[1][1].replace(")","")
@@ -47,9 +50,6 @@ class game():
                 pos = act[1][1].split("/")
                 self.rects[act[1][0]].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
                 self.rects[act[1][0]].set_rotation(-float(rot))
-            if act == "create":
-                self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
-                self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
 
     def main_loop(self):
         players_count = 0
