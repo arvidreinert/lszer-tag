@@ -19,9 +19,9 @@ class game():
     def make_bullet(self):
         name = f"bullet{len(list(self.rects))}"
         self.rects[name] = Rectangle((30*SW,30*SH),self.rects["player"].get_pos(),(0,0,0),"09.png")
-        self.rects[name].set_rotation(self.rects["player"].rotation)
-        self.bullets[name] = [self.rects[name],100,self.rects["player"].rotation]
-        self.actions.append(f"create:{name}*100*{self.rects["player"].rotation}")
+        self.rects[name].set_rotation(self.rects["player"].rotation+90)
+        self.bullets[name] = [self.rects[name],100,self.rects["player"].rotation+90]
+        self.actions.append(f"create:{name}*100*{self.rects["player"].rotation+90}")
 
     def decode(self,data_string=""):
         data_string = data_string.replace("'","")
