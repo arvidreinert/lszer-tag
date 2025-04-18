@@ -106,6 +106,17 @@ class game():
             self.rects["player"].change_rotation(90)
             for rect in self.rects:
                 self.rects[rect].update(screen)
+            tdlet = []
+            for bullet in self.bullets:
+                if self.bullets[bullet][1] > 0:
+                    self.bullets[bullet][0].move_towards(2*SW)
+                    self.bullets[bullet][1] -= 1
+                else:
+                    self.bullets[bullet][0].kill()
+                    tdlet.append(bullet)
+            for dlt in tdlet:
+                del self.bullets[dlt]
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
