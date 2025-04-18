@@ -57,7 +57,7 @@ class game():
         first = True
         fp = False
         while self.running:
-            clock.tick(40)
+            clock.tick(30)
             if self.count > 0:
                 self.count -= 1
             self.actions = []
