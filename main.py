@@ -34,8 +34,10 @@ class game():
                 actions[act][1]=actions[act][1].replace("(","")
                 actions[act][1]=actions[act][1].replace(")","")
                 print(actions[act][1])
+                rot = actions[act][2]
                 pos = actions[act][1].split("/")
                 self.rects[actions[act][0]].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
+                self.rects[actions[act][0]].set_rotation(float(rot))
 
     def main_loop(self):
         players_count = 0
@@ -100,7 +102,7 @@ class game():
 
             pygame.display.update()
             x = self.rects["player"].get_pos()
-            self.actions.append(f"move:enemy*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}")
+            self.actions.append(f"move:enemy*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects["player"].rotation)}")
             if first == False:
                 try:
                     server.send(f"actio;{self.actions}")
