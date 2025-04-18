@@ -48,8 +48,7 @@ class game():
                 self.rects[actions[act][0]].set_rotation(-float(rot))
             if act == "create":
                 self.rects[str(actions[act][0])] = Rectangle((20*SW,20*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
-                self.bullets[str(actions[act][0])] = [self.rects[str(actions[act][0])],str(actions[act][1]),float(actions[act][2])]
-                self.rects[str(actions[act][0])].set_rotation(self.bullets[str(actions[act][0])][2])
+                self.rects[str(actions[act][0])].set_rotation(float(actions[act][2]))
 
     def main_loop(self):
         players_count = 0
