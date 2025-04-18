@@ -8,11 +8,17 @@ class game():
         self.running = True
         self.server = server
         self.rects = {}
+        self.bullets = {}
         self.animations = {"move":[]}
         self.actions = []
         for i in range(0,20):
             self.animations["move"].append(f"survivor-move_handgun_{i}.png")
         self.rects["player"] = Rectangle((100*SW,100*SH),(round(random.uniform(100*SW,width-100*SW),2),height-100*SH),(0,0,0),self.animations["move"][0])
+    
+    def make_bullet(self):
+        self.rects[f"bullet{len(list(self.rects))}"] = Rectangle((20*SW,20*SH),self.rects["player"].get_pos(),(0,0,0),"09.png")
+        self.bullets[f"bullet{len(list(self.rects))}"] = [self.rects[f"bullet{len(list(self.rects))}"],100]
+        self.actions.append(f"create:bullet{len(list(self.rects))}*100")
 
     def decode(self,data_string=""):
         data_string = data_string.replace("'","")
@@ -38,6 +44,9 @@ class game():
                 pos = actions[act][1].split("/")
                 self.rects[actions[act][0]].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
                 self.rects[actions[act][0]].set_rotation(-float(rot))
+            if act == "create":
+                self.rects[str(actions[act][0])] = Rectangle((20*SW,20*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
+                self.bullets[str(actions[act][0])] = [self.rects[str(actions[act][0])],str(actions[act][1])]
 
     def main_loop(self):
         players_count = 0
@@ -45,7 +54,7 @@ class game():
         first = True
         fp = False
         while self.running:
-            clock.tick(60)
+            clock.tick(40)
             self.actions = []
             pygame.display.set_caption(f"{clock.get_fps()}")
             if players_count <= 1:
@@ -99,6 +108,8 @@ class game():
                     pressed_keys.append(str(event.key))
                 if event.type == pygame.KEYUP:
                     del pressed_keys[pressed_keys.index(str(event.key))]
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.make_bullet()
 
             pygame.display.update()
             x = self.rects["player"].get_pos()
