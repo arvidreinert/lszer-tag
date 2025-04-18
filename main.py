@@ -18,7 +18,7 @@ class game():
     
     def make_bullet(self):
         name = f"bullet{len(list(self.rects))}"
-        self.rects[name] = Rectangle((20*SW,20*SH),self.rects["player"].get_pos(),(0,0,0),"09.png")
+        self.rects[name] = Rectangle((30*SW,30*SH),self.rects["player"].get_pos(),(0,0,0),"09.png")
         self.rects[name].set_rotation(self.rects["player"].rotation)
         self.bullets[name] = [self.rects[name],100,self.rects["player"].rotation]
         self.actions.append(f"create:{name}*100*{self.rects["player"].rotation}")
@@ -48,7 +48,7 @@ class game():
                 self.rects[actions[act][0]].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
                 self.rects[actions[act][0]].set_rotation(-float(rot))
             if act == "create":
-                self.rects[str(actions[act][0])] = Rectangle((20*SW,20*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
+                self.rects[str(actions[act][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
                 self.rects[str(actions[act][0])].set_rotation(float(actions[act][2]))
 
     def main_loop(self):
