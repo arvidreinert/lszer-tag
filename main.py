@@ -16,9 +16,10 @@ class game():
         self.rects["player"] = Rectangle((100*SW,100*SH),(round(random.uniform(100*SW,width-100*SW),2),height-100*SH),(0,0,0),self.animations["move"][0])
     
     def make_bullet(self):
-        self.rects[f"bullet{len(list(self.rects))}"] = Rectangle((20*SW,20*SH),self.rects["player"].get_pos(),(0,0,0),"09.png")
-        self.bullets[f"bullet{len(list(self.rects))}"] = [self.rects[f"bullet{len(list(self.rects))}"],100]
-        self.actions.append(f"create:bullet{len(list(self.rects))}*100")
+        name = f"bullet{len(list(self.rects))}"
+        self.rects[name] = Rectangle((20*SW,20*SH),self.rects["player"].get_pos(),(0,0,0),"09.png")
+        self.bullets[name] = [self.rects[name],100]
+        self.actions.append(f"create:{name}*100")
 
     def decode(self,data_string=""):
         data_string = data_string.replace("'","")
