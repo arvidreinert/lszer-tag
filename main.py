@@ -55,7 +55,7 @@ class game():
                 if first:
                     if fp == False:
                         pygame.display.set_caption(f"player{players_count}")
-                    self.rects["enemy"] = Rectangle((100*SW,100*SH),(width/2,150*SH),(0,0,0),self.animations["move"][0])
+                    self.rects["enemy"] = Rectangle((100*SW,100*SH),(width/2,100*SH),(0,0,0),self.animations["move"][0])
                     first = False
                 answ = server.send_and_listen("req:actio")
                 if not answ == "False":
