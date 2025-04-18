@@ -12,7 +12,7 @@ class game():
         self.actions = []
         for i in range(0,20):
             self.animations["move"].append(f"survivor-move_handgun_{i}.png")
-        self.rects["player"] = Rectangle((100*SW,100*SH),(width/2,(height-100)*SH),(0,0,0),self.animations["move"][0])
+        self.rects["player"] = Rectangle((100*SW,100*SH),(random.randint(100*SW,width-100*SW),(height-100)*SH),(0,0,0),self.animations["move"][0])
 
     def decode(self,data_string=""):
         data_string = data_string.replace("'","")
