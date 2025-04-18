@@ -113,6 +113,7 @@ class game():
                     self.bullets[bullet][1] -= 1
                     self.bullets[bullet][0].update(screen)
                     x = self.bullets[bullet][0].get_pos()
+                    print("bullet:", x)
                     self.actions.append(f"move:{bullet}*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects[bullet].rotation)}")
                 else:
                     self.bullets[bullet][0].kill()
