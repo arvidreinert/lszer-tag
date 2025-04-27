@@ -44,19 +44,23 @@ class game():
             action_info_list = action_info_string.split("*")
             actions.append((action_name,action_info_list))
 
-        print("acts:",actions)
+        #print("acts:",actions)
         for act in actions:
             if act[0] == "create":
                 self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
                 self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
                 self.bullet_count += 1
             elif act[0] == "move":
-                act[1][1]=act[1][1].replace("(","")
-                act[1][1]=act[1][1].replace(")","")
-                rot = act[1][2]
-                pos = act[1][1].split("/")
-                self.rects[str(act[1][0])].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
-                self.rects[str(act[1][0])].set_rotation(-float(rot))
+                try:
+                    act[1][1]=act[1][1].replace("(","")
+                    act[1][1]=act[1][1].replace(")","")
+                    rot = act[1][2]
+                    pos = act[1][1].split("/")
+                    self.rects[str(act[1][0])].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
+                    self.rects[str(act[1][0])].set_rotation(-float(rot))
+                except:
+                    t = []
+        self.last_number = number
 
     def main_loop(self):
         players_count = 0

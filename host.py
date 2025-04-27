@@ -56,7 +56,14 @@ while True:
                     s.sendto(pickle.dumps(f"{actions_receveid}?{message_count}"), addr)
                     message_history.append(actions_receveid)
                     if len(message_history) >=151:
-                        del message_history[-1]
+                        del message_history[0]
                     message_count += 1
                     last_action_to = addr
                     actions_receveid = "False"
+
+        if "req:lostmsg" in data:
+            s,e = data.split(".")[1].split(";")
+            str = ""
+            for msg in message_history[s:e]:
+                str += f"{msg}="
+            s.sendto(pickle.dumps(f"{str}"), addr)
