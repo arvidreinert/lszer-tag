@@ -21,7 +21,7 @@ actions_receveid = "False"
 message_count = 0
 message_history = []
 while True:
-    ready,_,_, = select.select([s],[],[],1)
+    ready,_,_ = select.select([s],[],[],1)
     if ready:
         data,addr = s.recvfrom(4096)
         data = pickle.loads(data)
@@ -62,8 +62,8 @@ while True:
                     actions_receveid = "False"
 
         if "req:lostmsg" in data:
-            s,e = data.split(".")[1].split(";")
+            t,e = data.split(".")[1].split(";")
             str = ""
-            for msg in message_history[int(s):int(e)]:
+            for msg in message_history[int(t):int(e)]:
                 str += f"{msg}="
             s.sendto(pickle.dumps(f"{str}"), addr)
