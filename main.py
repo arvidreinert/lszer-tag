@@ -53,6 +53,7 @@ class game():
                 self.bullet_count += 1
             elif act[0] == "move":
                 try:
+                    print(act[1])
                     act[1][1]=act[1][1].replace("(","")
                     act[1][1]=act[1][1].replace(")","")
                     rot = act[1][2]
@@ -61,6 +62,7 @@ class game():
                     self.rects[str(act[1][0])].set_rotation(-float(rot))
                 except:
                     answ = server.send_and_listen(f"req:lostmsg{self.last_number};{number}")
+                    print(answ)
                     msgs = answ.split("=")
                     del msgs[-1]
                     for msg in msgs:
