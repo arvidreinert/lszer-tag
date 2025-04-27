@@ -62,7 +62,7 @@ class game():
                     self.rects[str(act[1][0])].set_rotation(-float(rot))
                 except:
                     answ = server.send_and_listen(f"req:lostmsg{self.last_number};{number}")
-                    print(answ)
+                    print("debug error:",answ)
                     msgs = answ.split("=")
                     del msgs[-1]
                     for msg in msgs:
