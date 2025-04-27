@@ -47,12 +47,10 @@ class game():
         print("acts:",actions)
         for act in actions:
             if act[0] == "create":
-                print(f"CREATE {act[1][0]}")
                 self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
                 self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
                 self.bullet_count += 1
             elif act[0] == "move":
-                print(f"MOVE {act[1][0]}")
                 act[1][1]=act[1][1].replace("(","")
                 act[1][1]=act[1][1].replace(")","")
                 rot = act[1][2]
