@@ -64,6 +64,6 @@ while True:
         if "req:lostmsg" in data:
             s,e = data.split(".")[1].split(";")
             str = ""
-            for msg in message_history[s:e]:
+            for msg in message_history[int(s):int(e)]:
                 str += f"{msg}="
             s.sendto(pickle.dumps(f"{str}"), addr)
