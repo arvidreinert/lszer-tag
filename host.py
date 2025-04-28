@@ -51,7 +51,7 @@ while True:
                     sok.sendto(pickle.dumps("False"), addr)
                 else:
                     sok.sendto(pickle.dumps(f"{actions_receveid}?{message_count}"), addr)
-                    message_history.append(actions_receveid)
+                    message_history.append(f"{actions_receveid}?{message_count}")
                     if len(message_history) >=151:
                         del message_history[0]
                     message_count += 1
@@ -66,4 +66,4 @@ while True:
             message_history.reverse()
             mesgs = ast.literal_eval(mesgs)
             print(mesgs[0])
-            sok.sendto(pickle.dumps(f"{mesgs}"), addr)
+            sok.sendto(pickle.dumps(f"{mesgs[0]}"), addr)
