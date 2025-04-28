@@ -26,45 +26,92 @@ class game():
         self.actions.append(f"create:{name}*100*{self.rects["player"].rotation-90}")
         self.bullet_count += 1
 
-    def decode(self,data_string=""):
-        org = data_string
-        data_string = data_string.replace("'","")
-        data_string,number = data_string.split("?")
-        all_actions = data_string.split(", ")
-        actions = []
-        for action in all_actions:
-            splitted = action.split(":")
-            x = 0
-            for split in splitted:
-                splitted[x] = split.replace("'","")
-                x += 1
-            action_name = splitted[0]
-            action_info_string = splitted[1]
-            action_info_list = action_info_string.split("*")
-            actions.append((action_name,action_info_list))
-
-        print("acts:",actions)
-        for act in actions:
-            if act[0] == "create":
-                self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
-                self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
-                self.bullet_count += 1
-            elif act[0] == "move":
-                try:
-                    act[1][1]=act[1][1].replace("(","")
-                    act[1][1]=act[1][1].replace(")","")
-                    rot = act[1][2]
-                    pos = act[1][1].split("/")
-                    self.rects[str(act[1][0])].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
-                    self.rects[str(act[1][0])].set_rotation(-float(rot))
-                except Exception as excp:
-                    answ = server.send_and_listen(f"req:lostmsg")
-                    print("debug error:",excp)
-                    answ = answ.replace("[","")
-                    answ = answ.replace("]","")
-                    print(answ)
-                    self.decode(answ)
-        self.last_number = number
+    def decode(self, data_string=""):
+        if not data_string:
+            return
+        try:
+            org = data_string
+            data_string = data_string.replace("'", "")
+            # Split the data string and number
+            parts = data_string.split("?")
+            if len(parts) != 2:
+                raise ValueError(f"Invalid data format: missing '?' separator in {data_string}")
+            data_string, number = parts
+            # Process the actions
+            all_actions = data_string.split(", ")
+            actions = []
+            for action in all_actions:
+                if not action:  # Skip empty actions
+                    continue
+                splitted = action.split(":")
+                if len(splitted) != 2:
+                    print(f"Warning: Skipping malformed action: {action}")
+                    continue
+                action_name = splitted[0].replace("'", "")
+                action_info_string = splitted[1].replace("'", "")
+                action_info_list = action_info_string.split("*")
+                actions.append((action_name, action_info_list))
+            # Process each action
+            for act in actions:
+                if act[0] == "create":
+                    if len(act[1]) < 3:
+                        print(f"Warning: Insufficient data for create action: {act}")
+                        continue  
+                    try:
+                        self.rects[str(act[1][0])] = Rectangle((30*SW, 30*SH), self.rects["enemy"].get_pos(), (0, 0, 0), "09.png")
+                        self.rects[str(act[1][0])].set_rotation(float(act[1][2]))
+                        self.bullet_count += 1
+                    except KeyError:
+                        print("Warning: Enemy rect not found, waiting for enemy initialization")
+                    except ValueError as e:
+                        print(f"Warning: Invalid value in create action: {e}")     
+                elif act[0] == "move":
+                    if len(act[1]) < 3:
+                        print(f"Warning: Insufficient data for move action: {act}")
+                        continue
+                    try:
+                        # Clean position data
+                        pos_data = act[1][1].replace("(", "").replace(")", "")
+                        pos = pos_data.split("/")
+                        if len(pos) != 2:
+                            print(f"Warning: Invalid position format: {pos_data}")
+                            continue
+                        x_pos = float(pos[0]) * SW
+                        y_pos = height - float(pos[1]) * SH
+                        rot = float(act[1][2])
+                        # Make sure the rect exists
+                        if str(act[1][0]) not in self.rects:
+                            print(f"Warning: Unknown rect ID: {act[1][0]}")
+                            continue  
+                        self.rects[str(act[1][0])].set_position(x_pos, y_pos)
+                        self.rects[str(act[1][0])].set_rotation(-rot)
+                    except Exception as excp:
+                        print(f"Error processing move action: {excp}")
+                        # Request the full message again
+                        max_retries = 3
+                        retry_count = 0
+                        while retry_count < max_retries:
+                            try:
+                                retry_count += 1
+                                print(f"Requesting lost message (attempt {retry_count}/{max_retries})")
+                                answ = self.server.send_and_listen(f"req:lostmsg")
+                                if not answ or answ == "False":
+                                    print("No response or invalid response from server")
+                                    break
+                                answ = answ.replace("[", "").replace("]", "")
+                                print(f"Received recovery data: {answ}")
+                                self.decode(answ)
+                                return  # Successfully recovered
+                            except Exception as retry_excp:
+                                print(f"Recovery attempt {retry_count} failed: {retry_excp}")  
+                        print("Failed to recover lost message after multiple attempts")
+                else:
+                    print(f"Warning: Unknown action type: {act[0]}")
+            # Update the last message number
+            self.last_number = number
+        except Exception as e:
+            print(f"Error decoding message: {e}")
+            print(f"Original message: {data_string}")
 
     def main_loop(self):
         players_count = 0
