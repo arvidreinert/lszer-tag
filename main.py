@@ -60,9 +60,9 @@ class game():
                 except Exception as excp:
                     answ = server.send_and_listen(f"req:lostmsg")
                     print("debug error:",excp)
-                    msgs = answ
-                    print(msgs)
-                    self.decode(msgs)
+                    answ = answ.replace("[","")
+                    answ = answ.replace("]","")
+                    self.decode(answ)
                     self.decode(org)
         self.last_number = number
 
