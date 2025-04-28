@@ -24,11 +24,9 @@ class game():
         self.rects[name].set_rotation(self.rects["player"].rotation-90)
         self.bullets[name] = [self.rects[name],100,self.rects["player"].rotation-90]
         self.actions.append(f"create:{name}*100*{self.rects["player"].rotation-90}")
-        print("creat:",name,self.actions)
         self.bullet_count += 1
 
     def decode(self,data_string=""):
-        print(data_string)
         org = data_string
         data_string = data_string.replace("'","")
         data_string,number = data_string.split("?")
@@ -53,7 +51,6 @@ class game():
                 self.bullet_count += 1
             elif act[0] == "move":
                 try:
-                    print(act[1])
                     act[1][1]=act[1][1].replace("(","")
                     act[1][1]=act[1][1].replace(")","")
                     rot = act[1][2]
@@ -66,6 +63,7 @@ class game():
                     msgs = answ.split("=")
                     del msgs[-1]
                     print(excp)
+                    print("debug error:",answ)
                     for msg in msgs:
                         if "create" in msg:
                             self.decode(msg)
@@ -98,7 +96,6 @@ class game():
                     first = False
                 answ = server.send_and_listen("req:actio")
                 if not answ == "False":
-                    print(answ)
                     answ = answ.replace("[","")
                     answ = answ.replace("]","")
                     self.decode(answ)
@@ -151,7 +148,6 @@ class game():
             self.actions.append(f"move:enemy*{str((x[0]/SW,x[1]/SH)).replace(", ","/")}*{str(self.rects["player"].rotation)}")
             if first == False:
                 server.send(f"actio;{self.actions}")
-                print("sended_acts:",self.actions)
 
 
 if ip == "":

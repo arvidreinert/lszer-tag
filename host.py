@@ -63,6 +63,7 @@ while True:
 
         if "req:lostmsg" in data:
             t,e = data.split("/")[1].split(".")
+            print(t,e)
             str = ""
             for msg in message_history[int(t):int(e)]:
                 str += f"{msg}="
