@@ -62,7 +62,7 @@ while True:
                     actions_receveid = "False"
 
         if "req:lostmsg" in data:
-            t,e = data.split(".")[1].split(";")
+            t,e = data.split("/")[1].split(".")
             str = ""
             for msg in message_history[int(t):int(e)]:
                 str += f"{msg}="
