@@ -3,6 +3,7 @@ import pickle
 import socket
 import select
 import pygame
+import ast
 hn = socket.gethostname()
 ai = socket.getaddrinfo(hn,None)
 for a in ai:
@@ -63,5 +64,6 @@ while True:
                 if "create" in mesgs:
                     break
             message_history.reverse()
-            print(mesgs)
+            mesgs = ast.literal_eval(mesgs)
+            print(mesgs[0])
             sok.sendto(pickle.dumps(f"{mesgs}"), addr)

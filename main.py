@@ -43,7 +43,7 @@ class game():
             action_info_list = action_info_string.split("*")
             actions.append((action_name,action_info_list))
 
-        #print("acts:",actions)
+        print("acts:",actions)
         for act in actions:
             if act[0] == "create":
                 self.rects[str(act[1][0])] = Rectangle((30*SW,30*SH),self.rects["enemy"].get_pos(),(0,0,0),"09.png")
