@@ -62,8 +62,8 @@ class game():
                     print("debug error:",excp)
                     answ = answ.replace("[","")
                     answ = answ.replace("]","")
+                    print(answ)
                     self.decode(answ)
-                    self.decode(org)
         self.last_number = number
 
     def main_loop(self):
