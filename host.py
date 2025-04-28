@@ -64,6 +64,4 @@ while True:
                 if "create" in mesgs:
                     break
             message_history.reverse()
-            mesgs = ast.literal_eval(mesgs)
-            print(mesgs[0])
-            sok.sendto(pickle.dumps(f"{mesgs[0]}"), addr)
+            sok.sendto(pickle.dumps(f"{mesgs}"), addr)
