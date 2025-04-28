@@ -58,16 +58,11 @@ class game():
                     self.rects[str(act[1][0])].set_position(float(pos[0])*SW,height-float(pos[1])*SH)
                     self.rects[str(act[1][0])].set_rotation(-float(rot))
                 except Exception as excp:
-                    answ = server.send_and_listen(f"req:lostmsg/{self.last_number}.{number}")
-                    print("debug error:",answ)
-                    msgs = answ.split("=")
-                    del msgs[-1]
-                    print(excp)
-                    print("debug error:",answ)
-                    for msg in msgs:
-                        if "create" in msg:
-                            self.decode(msg)
-                            break
+                    answ = server.send_and_listen(f"req:lostmsg")
+                    print("debug error:",excp)
+                    msgs = answ
+                    print(msgs)
+                    self.decode(msgs)
                     self.decode(org)
         self.last_number = number
 

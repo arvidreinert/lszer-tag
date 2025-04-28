@@ -58,10 +58,10 @@ while True:
                     actions_receveid = "False"
 
         if "req:lostmsg" in data:
-            t,e = data.split("/")[1].split(".")
-            print(t,e)
-            str = ""
-            for msg in message_history[int(t):int(e)]:
-                str += f"{msg}="
-            print(str)
-            sok.sendto(pickle.dumps(f"{str}"), addr)
+            message_history.reverse()
+            for mesgs in message_history:
+                if "create" in mesgs:
+                    break
+            message_history.reverse()
+            print(mesgs)
+            sok.sendto(pickle.dumps(f"{mesgs}"), addr)
