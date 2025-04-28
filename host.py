@@ -38,11 +38,9 @@ while True:
             sok.sendto(pickle.dumps(str(l)), addr)
 
         if "actio;" in data:
-            print("received from:", addr)
             #output: ['actio', "['create:card0,arvid_charzard_deck0.png,arvid_charzard_deck0.png0']"]
             actions_receveid = data.split(";")[1]
             last_action_to = addr
-            print(actions_receveid)
 
         if data == "req:actio":
             if actions_receveid == "False":
@@ -51,8 +49,6 @@ while True:
                 if last_action_to[1] == addr[1]:
                     sok.sendto(pickle.dumps("False"), addr)
                 else:
-                    print("sent to:",addr,"count:",message_count)
-                    print(actions_receveid, "send")
                     sok.sendto(pickle.dumps(f"{actions_receveid}?{message_count}"), addr)
                     message_history.append(actions_receveid)
                     if len(message_history) >=151:
@@ -67,4 +63,5 @@ while True:
             str = ""
             for msg in message_history[int(t):int(e)]:
                 str += f"{msg}="
+            print(str)
             sok.sendto(pickle.dumps(f"{str}"), addr)
