@@ -93,6 +93,7 @@ class game():
                 if not answ == "False":
                     answ = answ.replace("[","")
                     answ = answ.replace("]","")
+                    print(answ)
                     self.decode(answ)
 
 
